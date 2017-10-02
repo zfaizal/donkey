@@ -9,7 +9,9 @@ from .actuators.actuators import Maestro
 from .actuators.actuators import Teensy
 from .actuators.actuators import PWMSteering
 from .actuators.actuators import PWMThrottle
-from .actuators.actuators import MockController
+from .actuators.actuators import HBridge_DC_Motor
+from .actuators.actuators import TwoWheelSteeringThrottle
+from .actuators.actuators import MockActuator
 
 from .controllers.web import LocalWebController
 from .controllers.joystick import JoystickController

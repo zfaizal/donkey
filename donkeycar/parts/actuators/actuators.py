@@ -310,7 +310,78 @@ class Teensy:
 
         return ret
 
-class MockController(object):
+class HBridge_DC_Motor(object):
+    '''
+    Motor controlled with an hbridge from the gpio pins on Rpi
+    '''
+    def __init__(self, pin_forward, pin_backward):
+        import RPi.GPIO as GPIO
+        self.pin_forward = pin_forward
+        self.pin_backward = pin_backward
+
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(self.pin_forward, GPIO.OUT)
+        GPIO.setup(self.pin_backward, GPIO.OUT)
+
+        freq = 50 #HZ
+        self.pwm_forward = GPIO.PWM(self.pin_forward, freq)
+        self.pwm_backward = GPIO.PWM(self.pin_backward, freq)
+        self.pwm_forward.start(0)
+        self.pwm_backward.start(0)
+
+    def run(self, speed):
+        '''
+        Update the speed of the motor where 1 is full forward and
+        -1 is full backwards.
+        '''
+        if speed > 1 or speed < -1:
+            raise ValueError( "Speed must be between 1(forward) and -1(reverse)")
+        
+        self.speed = speed
+        self.throttle = int(utils.map_range(speed, -1, 1, -100, 100))
+        
+        if self.throttle > 0:
+            self.pwm_forward.ChangeDutyCycle(self.throttle)
+            self.pwm_backward.ChangeDutyCycle(0)
+        elif self.throttle < 0:
+            self.pwm_forward.ChangeDutyCycle(0)
+            self.pwm_backward.ChangeDutyCycle(-self.throttle)
+        else:
+            self.pwm_forward.ChangeDutyCycle(0)
+            self.pwm_backward.ChangeDutyCycle(0)
+            
+
+    def shutdown(self):
+        import RPi.GPIO as GPIO        
+        self.pwm_forward.stop()
+        self.pwm_backward.stop()
+        GPIO.cleanup()
+
+
+class TwoWheelSteeringThrottle(object):
+
+    def run(self, throttle, steering):
+        if throttle > 1 or throttle < -1:
+            raise ValueError( "throttle must be between 1(forward) and -1(reverse)")
+ 
+        if steering > 1 or steering < -1:
+            raise ValueError( "steering must be between 1(right) and -1(left)")
+
+        left_motor_speed = throttle
+        right_motor_speed = throttle
+ 
+        if steering < 0:
+            left_motor_speed *= -steering
+        elif steering > 0:
+            right_motor_speed *= steering
+
+        return left_motor_speed, right_motor_speed
+
+    def shutdown(self):
+        pass
+
+
+class MockActuator(object):
     def __init__(self):
         pass
 
