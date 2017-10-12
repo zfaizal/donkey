@@ -56,3 +56,5 @@ LEFT_PIN_FRWD = 0
 LEFT_PIN_BKWD = 0
 RIGHT_PIN_FRWD = 0
 RIGHT_PIN_BKWD = 0
+RIGHT_PIN_PWM = 12 #for the PI these are recommended
+LEFT_PIN_PWM = 19 #for the PI these are recommended

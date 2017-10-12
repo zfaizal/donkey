@@ -33,7 +33,7 @@ def drive(cfg, model_path=None, use_joystick=False):
 
     #Initialize car
     V = dk.vehicle.Vehicle()
-    cam = dk.parts.PiCamera(resolution=cfg.CAMERA_RESOLUTION)
+    cam = dk.parts.Webcam(resolution=cfg.CAMERA_RESOLUTION)
     V.add(cam, outputs=['cam/image_array'], threaded=True)
     
     if use_joystick or cfg.USE_JOYSTICK_AS_DEFAULT:
@@ -94,8 +94,8 @@ def drive(cfg, model_path=None, use_joystick=False):
           outputs=['angle', 'throttle'])
     
     
-    left_motor = dk.parts.HBridge_DC_Motor(cfg.LEFT_PIN_FRWD, cfg.LEFT_PIN_BKWD)
-    right_motor = dk.parts.HBridge_DC_Motor(cfg.RIGHT_PIN_FRWD, cfg.RIGHT_PIN_BKWD)
+    left_motor = dk.parts.HBridge_DC_Motor(cfg.LEFT_PIN_FRWD, cfg.LEFT_PIN_BKWD, cfg.LEFT_PIN_PWM)
+    right_motor = dk.parts.HBridge_DC_Motor(cfg.RIGHT_PIN_FRWD, cfg.RIGHT_PIN_BKWD, cfg.RIGHT_PIN_PWM)
     two_wheel_control = dk.parts.TwoWheelSteeringThrottle()
 
     V.add(two_wheel_control, 
