@@ -30,6 +30,15 @@ class PiCamera(BaseCamera):
         print('PiCamera loaded.. .warming camera')
         time.sleep(2)
 
+    def run(self):
+        f = next(self.stream)
+        # grab the frame from the stream and clear the stream in
+        # preparation for the next frame
+        self.frame = f.array
+        self.rawCapture.truncate(0)
+        return self.frame
+
+
 
     def update(self):
         # keep looping infinitely until the thread is stopped
