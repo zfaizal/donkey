@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Build a car. - Donkey Car</title>
+  <title>IMU - Donkey Car</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
@@ -18,9 +18,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Build a car.";
-    var mkdocs_page_input_path = "guide/build_hardware.md";
-    var mkdocs_page_url = "/guide/build_hardware/";
+    var mkdocs_page_name = "IMU";
+    var mkdocs_page_input_path = "parts/imu.md";
+    var mkdocs_page_url = "/parts/imu/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -57,35 +57,29 @@
 		
     <span class="caption-text">User Guide</span>
     <ul class="subnav">
-                <li class=" current">
+                <li class="">
                     
-    <a class="current" href="./">Build a car.</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l3"><a href="#instructions-to-build-a-donkey2-car">Instructions to build a Donkey2 Car</a></li>
-    
-
-    </ul>
+    <a class="" href="../../guide/build_hardware/">Build a car.</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../install_software/">Install the software.</a>
+    <a class="" href="../../guide/install_software/">Install the software.</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../get_driving/">Get driving.</a>
+    <a class="" href="../../guide/get_driving/">Get driving.</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../calibrate/">Calibrate steering and throttle.</a>
+    <a class="" href="../../guide/calibrate/">Calibrate steering and throttle.</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../train_autopilot/">Train an autopilot.</a>
+    <a class="" href="../../guide/train_autopilot/">Train an autopilot.</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../simulator/">Donkey Simulator.</a>
+    <a class="" href="../../guide/simulator/">Donkey Simulator.</a>
                 </li>
     </ul>
 	    </li>
@@ -96,23 +90,35 @@
     <ul class="subnav">
                 <li class="">
                     
-    <a class="" href="../../parts/about/">About</a>
+    <a class="" href="../about/">About</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../../parts/actuators/">Actuators</a>
+    <a class="" href="../actuators/">Actuators</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../../parts/controllers/">Controllers</a>
+    <a class="" href="../controllers/">Controllers</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../../parts/stores/">Stores</a>
+    <a class="" href="../stores/">Stores</a>
                 </li>
-                <li class="">
+                <li class=" current">
                     
-    <a class="" href="../../parts/imu/">IMU</a>
+    <a class="current" href="./">IMU</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#imu">IMU</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#mpu6050">MPU6050</a></li>
+        
+        </ul>
+    
+
+    </ul>
                 </li>
     </ul>
 	    </li>
@@ -170,14 +176,14 @@
     
       
         
-          <li>User Guide &raquo;</li>
+          <li>Parts &raquo;</li>
         
       
     
-    <li>Build a car.</li>
+    <li>IMU</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/tawnkramer/donkey/edit/master/docs/guide/build_hardware.md"
+        <a href="https://github.com/tawnkramer/donkey/edit/master/docs/parts/imu.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -187,10 +193,34 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="instructions-to-build-a-donkey2-car">Instructions to build a Donkey2 Car</h1>
-<p>The standard hardware build instructions can be found in this 
-<a href="https://docs.google.com/document/d/11nu6_ReReoIxA1KVq-sCy7Tczbk6io0izcItucrw7hI/edit?usp=sharing">google doc</a>.</p>
-<p>Once you have the car built follow the <a href="../install_software/">software instructions</a>.</p>
+                <h1 id="imu">IMU</h1>
+<p>IMUs or inertial measurement units are parts that sense the inertial forces on a robot. They vary depending on sensor, but may commonly include linear and rotational accelleration. They may sometimes include magnetometer to give global compasss facing dir. Frequently temperature is available from these as it affects their sensitivity.</p>
+<h2 id="mpu6050">MPU6050</h2>
+<p>This is a cheap, small, and moderately precise imu. Commonly available at <a href="https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Dindustrial&amp;field-keywords=MPU6050">Amazon</a>.</p>
+<ul>
+<li>Typically uses the I2C interface and can be chained off the default PWM PCA9685 board. This configuration will also provide power.</li>
+<li>Outputs acceleration X, Y, Z, Gyroscope X, Y, Z, and temperature.</li>
+<li>Chip built-in 16bit AD converter, 16bit data output</li>
+<li>Gyroscopes range: +/- 250 500 1000 2000 degree/sec</li>
+<li>Acceleration range: ±2 ±4 ±8 ±16g</li>
+</ul>
+<h5 id="software-setup">Software Setup</h5>
+<p>Install smbus:</p>
+<p>from package:</p>
+<pre><code class="bash"> sudo apt install python3-smbus
+</code></pre>
+
+<p>or from source:</p>
+<pre><code class="bash">sudo apt-get install i2c-tools libi2c-dev python-dev python3-dev
+git clone https://github.com/pimoroni/py-smbus.git
+cd py-smbus/library
+python setup.py build
+sudo python setup.py install
+</code></pre>
+
+<p>Install pip lib for mpu6050</p>
+<pre><code class="bash">pip install mpu6050-raspberrypi
+</code></pre>
               
             </div>
           </div>
@@ -198,10 +228,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../install_software/" class="btn btn-neutral float-right" title="Install the software.">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../utility/donkey/" class="btn btn-neutral float-right" title="donkey">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../.." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../stores/" class="btn btn-neutral" title="Stores"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -229,10 +259,10 @@
           <a href="https://github.com/tawnkramer/donkey" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../.." style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../stores/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../install_software/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../../utility/donkey/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
