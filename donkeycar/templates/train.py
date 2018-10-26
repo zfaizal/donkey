@@ -82,6 +82,7 @@ if deterministic:
     session_conf = tf.ConfigProto(intra_op_parallelism_threads=1, inter_op_parallelism_threads=1)
 
     from keras import backend as K
+    K.set_image_dim_ordering('th')
 
     # The below tf.set_random_seed() will make random number generation
     # in the TensorFlow backend have a well-defined initial state.
