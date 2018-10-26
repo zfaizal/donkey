@@ -396,7 +396,7 @@ def default_bhv(num_outputs, num_bvh_inputs, input_shape):
     x = Convolution2D(32, (5,5), strides=(2,2), activation='relu')(x)
     x = Convolution2D(64, (5,5), strides=(2,2), activation='relu')(x)
     x = Convolution2D(64, (3,3), strides=(1,1), activation='relu')(x)
-    x = Convolution2D(64, (3,3), strides=(1,1), activation='relu')(x)
+    x = Convolution2D(64, (3,3), strides=(1,1), activation='relu', padding="same")(x)
     x = Flatten(name='flattened')(x)
     x = Dense(100, activation='relu')(x)
     x = Dropout(.1)(x)
